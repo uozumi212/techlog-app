@@ -17,6 +17,7 @@ module TechlogApp
       view_specs: false,
       helper_specs: false,
       routing_specs: false
+      config.i18n.default_locale = :ja
    end
   end
 end

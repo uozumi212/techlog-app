@@ -86,28 +86,32 @@ describe 'User', type: :system do
       end
     end
   end
-end
-describe 'ログイン機能の検証' do
-  # 事前にユーザー作成
-  before do
-    create(:user, nickname: nickname, email: email, password: password, password_confirmation: password) # 事前にユーザー作成
 
-    visit '/users/sign_in'
-    fill_in 'user_email', with: email
-    fill_in 'user_password', with: 'password'
-    click_button 'ログイン'
-  end
+  describe 'ログイン機能の検証' do
+    # 事前にユーザー作成
+    before do
+      create(:user, nickname: nickname, email: email, password: password, password_confirmation: password) # 事前にユーザー作成
 
-  context '正常系' do
-    it 'ログインに成功し、トップページにリダイレクトする' do
-      expect(current_path).to eq('/')
+      visit '/users/sign_in'
+      fill_in 'user_email', with: email
+      fill_in 'user_password', with: 'password'
+      click_button 'ログイン'
     end
-  end
 
-  context '異常系' do
-    let(:password) { 'NGpassword' }
-    it 'ログインに失敗し、ページ遷移しない' do
-      expect(current_path).to eq('/users/sign_in')
+    context '正常系' do
+      it 'ログインに成功し、トップページにリダイレクトする' do
+        expect(current_path).to eq('/')
+      end
+    end
+
+    context '異常系' do
+      let(:password) { 'NGpassword' }
+      it 'ログインに失敗し、ページ遷移しない' do
+        expect(current_path).to eq('/users/sign_in')
+      end
+        it 'ログイン失敗時のフラッシュメッセージを表示する' do  # 追加
+          expect(page).to have_content('Invalid Email or password')
+    
     end
   end
 end

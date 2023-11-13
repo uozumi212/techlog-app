@@ -26,6 +26,23 @@ def index
   @posts = Post.limit(10).order(created_at: :desc)
 end
 
+def destroy
+  @post = Post.find_by(id: params[:id])
+  if @post.user == current_user
+    @post.destroy
+    flash[:notice] = '投稿を削除しました。'
+  end
+  redirect_to posts_path
+end
+
+# def destroy
+#   @post = Post.find_by(id: params[:id])
+#   if @post.user == current_user
+#     @post.destroy
+#     flash[:notice] = '投稿が削除されました。'
+#   end
+#   redirect_to posts_path
+# end
 
 private
 
